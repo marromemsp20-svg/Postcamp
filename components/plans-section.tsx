@@ -123,10 +123,10 @@ export function PlansSection() {
 
               <p className="text-sm text-muted-foreground mb-6">{plan.description}</p>
 
-              <ul className="space-y-3 mb-8 flex-grow">
+              <ul className="space-y-3 mb-8 grow">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm">
-                    <Check className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                    <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                     <span>{feature}</span>
                   </li>
                 ))}
