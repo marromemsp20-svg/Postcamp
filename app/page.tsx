@@ -13,9 +13,9 @@ export default function HomePage() {
       <Header />
       <Hero />
       <MethodSection />
+      <LevelsSection />
       <PlansSection />
       <DietsSection />
-      <LevelsSection />
       <CTASection />
       <Footer />
     </main>
