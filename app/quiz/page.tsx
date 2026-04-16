@@ -8,7 +8,6 @@ import React, { useState, useEffect } from 'react'
 const CONFIG = {
   whatsapp: "5512996487375",
   whatsappMsg: "Olá! Fiz o quiz do POSTCAMP e quero saber mais.",
-  planURL: "/growth", // Ou a URL completa da sua página de planos
 };
 
 const QUESTIONS = [
@@ -44,6 +43,7 @@ const QUESTIONS = [
 const DIETAS: Record<string, any> = {
   viral: {
     name: "Dieta Viral",
+    url: "https://www.postcamp.app.br/dieta-viral",
     desc: "Você precisa aparecer para pessoas novas todos os dias. Sem alcance, nenhuma outra estratégia funciona. Essa dieta coloca sua loja no mapa.",
     items: [
       { s: "1 vídeo por dia", r: " — curto, direto, gancho nos primeiros 3 segundos." },
@@ -55,6 +55,7 @@ const DIETAS: Record<string, any> = {
   },
   autoridade: {
     name: "Dieta Autoridade",
+    url: "https://www.postcamp.app.br/dieta-autoridade",
     desc: "Você já aparece, mas não converte. As pessoas precisam te ver como referência antes de comprar. Essa dieta constrói esse posicionamento.",
     items: [
       { s: "3 carrosséis por semana", r: " — conteúdo profundo que educa e gera salvamentos." },
@@ -66,6 +67,7 @@ const DIETAS: Record<string, any> = {
   },
   crescimento: {
     name: "Dieta Crescimento",
+    url: "https://www.postcamp.app.br/dieta-crescimento",
     desc: "Você está pronto para escalar. Tem noção do que funciona, mas falta estrutura e volume. Essa dieta te coloca em modo de expansão real.",
     items: [
       { s: "1 vídeo + 1 carrossel por dia", r: " — um para alcance, outro para profundidade." },
@@ -84,12 +86,14 @@ export default function QuizDiagnostico() {
   const [step, setStep] = useState<'quiz' | 'gate' | 'result'>('quiz');
   const [curIdx, setCurIdx] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
-  const [selectedOpt, setSelectedOpt] = useState<string | null>(null);
+
+  // FIX: selectedOpt agora armazena a LETRA (l), que é única por pergunta
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+
   const [winner, setWinner] = useState<string | null>(null);
   const [lead, setLead] = useState({ name: '', email: '' });
   const [emailError, setEmailError] = useState(false);
 
-  // Lógica para definir o vencedor quando o quiz acaba
   useEffect(() => {
     if (step === 'gate') {
       const counts: Record<string, number> = { viral: 0, autoridade: 0, crescimento: 0 };
@@ -100,10 +104,15 @@ export default function QuizDiagnostico() {
   }, [step, answers]);
 
   const handleNext = () => {
+    if (!selectedLetter) return;
+
+    // Recupera o valor (v) da opção selecionada pela letra
+    const selectedOpt = QUESTIONS[curIdx].opts.find(o => o.l === selectedLetter);
     if (!selectedOpt) return;
-    const newAnswers = [...answers, selectedOpt];
+
+    const newAnswers = [...answers, selectedOpt.v];
     setAnswers(newAnswers);
-    setSelectedOpt(null);
+    setSelectedLetter(null); // limpa seleção para a próxima pergunta
 
     if (curIdx < QUESTIONS.length - 1) {
       setCurIdx(curIdx + 1);
@@ -118,15 +127,14 @@ export default function QuizDiagnostico() {
       return;
     }
 
-    // Envio para Formspree (opcional, mantendo sua lógica)
     try {
       await fetch('https://formspree.io/f/xykboooy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          nome: lead.name, 
-          email: lead.email, 
-          dieta_recebida: winner ? DIETAS[winner].name : 'N/A' 
+        body: JSON.stringify({
+          nome: lead.name,
+          email: lead.email,
+          dieta_recebida: winner ? DIETAS[winner].name : 'N/A'
         })
       });
     } catch (e) { console.error("Erro ao capturar lead"); }
@@ -138,7 +146,7 @@ export default function QuizDiagnostico() {
     setStep('quiz');
     setCurIdx(0);
     setAnswers([]);
-    setSelectedOpt(null);
+    setSelectedLetter(null);
     setWinner(null);
     setLead({ name: '', email: '' });
     setEmailError(false);
@@ -147,7 +155,7 @@ export default function QuizDiagnostico() {
   return (
     <main className="main-wrapper">
       <style jsx global>{`
-        .main-wrapper { 
+        .main-wrapper {
           background: #0f0f0f; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; font-family: 'DM Sans', sans-serif; color: #fff;
         }
         .qz { background: #0A0A0A; border: 0.5px solid #1e1e1e; border-radius: 20px; padding: 2.5rem 2rem; width: 100%; max-width: 520px; }
@@ -158,7 +166,7 @@ export default function QuizDiagnostico() {
 
         .q-num { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #444; margin-bottom: .5rem; }
         .q-title { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 800; line-height: 1.3; margin-bottom: 1.5rem; }
-        
+
         .opts { display: flex; flex-direction: column; gap: 9px; }
         .opt { background: #111; border: 1px solid #1e1e1e; border-radius: 10px; padding: .85rem 1rem; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 12px; }
         .opt:hover { border-color: #1DB954; background: #0d1f13; }
@@ -173,7 +181,6 @@ export default function QuizDiagnostico() {
         .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
         .nav-info { font-size: .75rem; color: #333; }
 
-        /* GATE & RESULT */
         .gate, .result { display: flex; flex-direction: column; gap: 1rem; }
         .gate-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; line-height: 1.25; }
         .gate-sub { font-size: .82rem; color: #666; line-height: 1.6; }
@@ -194,10 +201,10 @@ export default function QuizDiagnostico() {
 
       <div className="qz">
         <div className="brand"><div className="brand-dot"></div>POSTCAMP · Diagnóstico</div>
-        
+
         <div className="prog-wrap">
-          <div 
-            className="prog-fill" 
+          <div
+            className="prog-fill"
             style={{ width: step === 'quiz' ? `${(curIdx / QUESTIONS.length) * 100}%` : step === 'gate' ? '85%' : '100%' }}
           ></div>
         </div>
@@ -209,10 +216,11 @@ export default function QuizDiagnostico() {
             <div className="q-title">{QUESTIONS[curIdx].q}</div>
             <div className="opts">
               {QUESTIONS[curIdx].opts.map((o) => (
-                <div 
-                  key={o.l} 
-                  className={`opt ${selectedOpt === o.v ? 'sel' : ''}`}
-                  onClick={() => setSelectedOpt(o.v)}
+                <div
+                  key={o.l}
+                  // FIX: compara pela letra, que é única em cada pergunta
+                  className={`opt ${selectedLetter === o.l ? 'sel' : ''}`}
+                  onClick={() => setSelectedLetter(o.l)}
                 >
                   <div className="opt-l">{o.l}</div>
                   <div className="opt-t">{o.t}</div>
@@ -221,10 +229,10 @@ export default function QuizDiagnostico() {
             </div>
             <div className="nav">
               <div className="nav-info">{curIdx + 1} / {QUESTIONS.length}</div>
-              <button 
-                className={`btn-next ${selectedOpt ? 'active' : ''}`} 
+              <button
+                className={`btn-next ${selectedLetter ? 'active' : ''}`}
                 onClick={handleNext}
-                disabled={!selectedOpt}
+                disabled={!selectedLetter}
               >
                 Próximo →
               </button>
@@ -238,7 +246,7 @@ export default function QuizDiagnostico() {
             <div style={{ fontSize: '.7rem', color: '#1DB954', textTransform: 'uppercase' }}>Sua dieta está pronta</div>
             <div className="gate-title">Qual email você usa<br />no seu negócio?</div>
             <p className="gate-sub">Vamos enviar sua dieta personalizada + um bônus exclusivo para você começar hoje.</p>
-            
+
             <div style={{ background: '#111', padding: '1rem', borderRadius: '10px', display: 'flex', gap: '12px', alignItems: 'center' }}>
               <div style={{ width: '36px', height: '36px', background: '#1a1a1a', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -252,14 +260,14 @@ export default function QuizDiagnostico() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <input 
-                className="gate-input" 
+              <input
+                className="gate-input"
                 placeholder="Seu nome"
                 value={lead.name}
                 onChange={e => setLead({...lead, name: e.target.value})}
               />
-              <input 
-                className={`gate-input ${emailError ? 'error' : ''}`} 
+              <input
+                className={`gate-input ${emailError ? 'error' : ''}`}
                 placeholder="Seu melhor email"
                 value={lead.email}
                 onChange={e => { setLead({...lead, email: e.target.value}); setEmailError(false); }}
@@ -276,7 +284,7 @@ export default function QuizDiagnostico() {
             <div style={{ fontSize: '.7rem', color: '#1DB954', textTransform: 'uppercase' }}>Sua dieta ideal · POSTCAMP</div>
             <div style={{ fontFamily: 'Syne', fontSize: '1.9rem', fontWeight: 800 }}>{DIETAS[winner].name}</div>
             <p style={{ fontSize: '.85rem', color: '#777', lineHeight: 1.7 }}>{DIETAS[winner].desc}</p>
-            
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {DIETAS[winner].items.map((item: any, i: number) => (
                 <div key={i} className="ri">
@@ -287,8 +295,9 @@ export default function QuizDiagnostico() {
             </div>
 
             <hr style={{ border: 'none', borderTop: '.5px solid #1a1a1a', margin: '.5rem 0' }} />
-            
-            <button className="btn-cta" onClick={() => window.open(CONFIG.planURL, '_self')}>
+
+            {/* FIX: usa a URL específica de cada dieta */}
+            <button className="btn-cta" onClick={() => window.open(DIETAS[winner].url, '_blank')}>
               {DIETAS[winner].cta}
             </button>
             <button className="btn-wpp" onClick={() => window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.whatsappMsg)}`, '_blank')}>
