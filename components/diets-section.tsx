@@ -58,7 +58,7 @@ export function DietsSection() {
             Sua receita de posts para a semana
           </h2>
           <p className="mt-6 text-lg text-muted-foreground text-balance">
-            Em vez de dieta alimentar, dieta de posts. Escolha o que combina com seu objetivo e execute.
+            Planejamos sua "dieta" de posts. Escolha o que combina com seu objetivo e execute.
           </p>
         </div>
 
@@ -101,8 +101,11 @@ export function DietsSection() {
           <Button
             size="lg"
             className="bg-primary text-primary-foreground hover:bg-primary/90 text-base font-semibold px-8 py-6"
+            asChild
           >
-            Faça o Quiz
+            <a href="https://www.postcamp.app.br/quiz" target="_blank" rel="noopener noreferrer">
+              Faça o Quiz
+            </a>
           </Button>
         </div>
       </div>
