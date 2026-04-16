@@ -86,12 +86,9 @@ export default function QuizDiagnostico() {
   const [step, setStep] = useState<'quiz' | 'gate' | 'result'>('quiz');
   const [curIdx, setCurIdx] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
-
-  // FIX: selectedOpt agora armazena a LETRA (l), que é única por pergunta
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
-
   const [winner, setWinner] = useState<string | null>(null);
-  const [lead, setLead] = useState({ name: '', email: '' });
+  const [lead, setLead] = useState({ name: '', email: '', phone: '' });
   const [emailError, setEmailError] = useState(false);
 
   useEffect(() => {
@@ -105,14 +102,12 @@ export default function QuizDiagnostico() {
 
   const handleNext = () => {
     if (!selectedLetter) return;
-
-    // Recupera o valor (v) da opção selecionada pela letra
     const selectedOpt = QUESTIONS[curIdx].opts.find(o => o.l === selectedLetter);
     if (!selectedOpt) return;
 
     const newAnswers = [...answers, selectedOpt.v];
     setAnswers(newAnswers);
-    setSelectedLetter(null); // limpa seleção para a próxima pergunta
+    setSelectedLetter(null);
 
     if (curIdx < QUESTIONS.length - 1) {
       setCurIdx(curIdx + 1);
@@ -134,6 +129,7 @@ export default function QuizDiagnostico() {
         body: JSON.stringify({
           nome: lead.name,
           email: lead.email,
+          telefone: lead.phone,
           dieta_recebida: winner ? DIETAS[winner].name : 'N/A'
         })
       });
@@ -148,7 +144,7 @@ export default function QuizDiagnostico() {
     setAnswers([]);
     setSelectedLetter(null);
     setWinner(null);
-    setLead({ name: '', email: '' });
+    setLead({ name: '', email: '', phone: '' });
     setEmailError(false);
   };
 
@@ -184,15 +180,18 @@ export default function QuizDiagnostico() {
         .gate, .result { display: flex; flex-direction: column; gap: 1rem; }
         .gate-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; line-height: 1.25; }
         .gate-sub { font-size: .82rem; color: #666; line-height: 1.6; }
-        .gate-input { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 14px; font-size: .85rem; color: #fff; outline: none; transition: border-color .15s; }
+        .gate-input { background: #111; border: 1px solid #222; border-radius: 8px; padding: 12px 14px; font-size: .85rem; color: #fff; outline: none; transition: border-color .15s; width: 100%; box-sizing: border-box; }
         .gate-input:focus { border-color: #1DB954; }
         .gate-input.error { border-color: #ff4444; }
-        .btn-reveal, .btn-cta { background: #1DB954; color: #0A0A0A; padding: 13px; border-radius: 8px; border: none; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; }
-        .btn-wpp { background: transparent; color: #25D366; border: 1px solid #1a3a20; padding: 11px; border-radius: 8px; cursor: pointer; }
-        .btn-restart { background: transparent; border: 1px solid #1a1a1a; color: #333; padding: 10px; border-radius: 8px; cursor: pointer; font-size: .78rem; }
+        .phone-wrap { position: relative; }
+        .phone-wrap .gate-input { padding-left: 38px; }
+        .phone-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: .82rem; pointer-events: none; }
+        .btn-reveal, .btn-cta { background: #1DB954; color: #0A0A0A; padding: 13px; border-radius: 8px; border: none; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; width: 100%; }
+        .btn-wpp { background: transparent; color: #25D366; border: 1px solid #1a3a20; padding: 11px; border-radius: 8px; cursor: pointer; width: 100%; }
+        .btn-restart { background: transparent; border: 1px solid #1a1a1a; color: #333; padding: 10px; border-radius: 8px; cursor: pointer; font-size: .78rem; width: 100%; }
 
         .ri { display: flex; align-items: flex-start; gap: 10px; padding: .75rem; background: #111; border-radius: 8px; border: .5px solid #1e1e1e; }
-        .ri-dot { width: 6px; height: 6px; border-radius: 50%; background: #1DB954; margin-top: 6px; }
+        .ri-dot { width: 6px; height: 6px; border-radius: 50%; background: #1DB954; margin-top: 6px; flex-shrink: 0; }
         .ri-text { font-size: .8rem; color: #888; }
         .ri-text strong { color: #fff; }
 
@@ -218,7 +217,6 @@ export default function QuizDiagnostico() {
               {QUESTIONS[curIdx].opts.map((o) => (
                 <div
                   key={o.l}
-                  // FIX: compara pela letra, que é única em cada pergunta
                   className={`opt ${selectedLetter === o.l ? 'sel' : ''}`}
                   onClick={() => setSelectedLetter(o.l)}
                 >
@@ -244,11 +242,11 @@ export default function QuizDiagnostico() {
         {step === 'gate' && (
           <div className="gate">
             <div style={{ fontSize: '.7rem', color: '#1DB954', textTransform: 'uppercase' }}>Sua dieta está pronta</div>
-            <div className="gate-title">Qual email você usa<br />no seu negócio?</div>
-            <p className="gate-sub">Vamos enviar sua dieta personalizada + um bônus exclusivo para você começar hoje.</p>
+            <div className="gate-title">Só mais um passo<br />para ver sua dieta</div>
+            <p className="gate-sub">Preencha os dados abaixo e receba sua dieta personalizada + um bônus exclusivo para começar hoje.</p>
 
             <div style={{ background: '#111', padding: '1rem', borderRadius: '10px', display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <div style={{ width: '36px', height: '36px', background: '#1a1a1a', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '36px', height: '36px', background: '#1a1a1a', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <rect x="3" y="7" width="10" height="7" rx="2" stroke="#1DB954" strokeWidth="1.2"/>
                   <path d="M5 7V5a3 3 0 016 0v2" stroke="#1DB954" strokeWidth="1.2" strokeLinecap="round"/>
@@ -269,9 +267,20 @@ export default function QuizDiagnostico() {
               <input
                 className={`gate-input ${emailError ? 'error' : ''}`}
                 placeholder="Seu melhor email"
+                type="email"
                 value={lead.email}
                 onChange={e => { setLead({...lead, email: e.target.value}); setEmailError(false); }}
               />
+              <div className="phone-wrap">
+                <span className="phone-icon">📱</span>
+                <input
+                  className="gate-input"
+                  placeholder="WhatsApp (com DDD)"
+                  type="tel"
+                  value={lead.phone}
+                  onChange={e => setLead({...lead, phone: e.target.value})}
+                />
+              </div>
               <button className="btn-reveal" onClick={handleReveal}>Revelar minha dieta →</button>
               <div style={{ fontSize: '.65rem', color: '#333', textAlign: 'center' }}>Sem spam. Só conteúdo que vale o seu tempo.</div>
             </div>
@@ -296,7 +305,6 @@ export default function QuizDiagnostico() {
 
             <hr style={{ border: 'none', borderTop: '.5px solid #1a1a1a', margin: '.5rem 0' }} />
 
-            {/* FIX: usa a URL específica de cada dieta */}
             <button className="btn-cta" onClick={() => window.open(DIETAS[winner].url, '_blank')}>
               {DIETAS[winner].cta}
             </button>
