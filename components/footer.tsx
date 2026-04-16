@@ -42,10 +42,10 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Planos</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link href="#" className="hover:text-foreground transition-colors">Starter (Grátis)</Link></li>
-              <li><Link href="#" className="hover:text-foreground transition-colors">Growth</Link></li>
-              <li><Link href="#" className="hover:text-foreground transition-colors">Elite</Link></li>
-              <li><Link href="#" className="hover:text-foreground transition-colors">Personal Trainer</Link></li>
+              <li><Link href="https://wa.me/5512988101210?text=Ol%C3%A1!%20Quero%20participar%20do%20Plano%20Starter%20gratuito%20do%20POSTCAMP" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Starter (Grátis)</Link></li>
+              <li><Link href="https://www.postcamp.app.br/plano-growth" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Growth</Link></li>
+              <li><Link href="https://www.postcamp.app.br/plano-elite" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Elite</Link></li>
+              <li><Link href="https://www.postcamp.app.br/personal-trainer" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Personal Trainer</Link></li>
             </ul>
           </div>
 
