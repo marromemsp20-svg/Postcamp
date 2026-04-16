@@ -28,9 +28,12 @@ export function CTASection() {
               <Button
                 size="lg"
                 className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-base font-semibold px-8 py-6 gap-2"
+                asChild
               >
-                Começar Agora
-                <ArrowRight className="h-5 w-5" />
+                <a href="https://wa.me/5512988101210?text=Vim%20pelo%20site%20e%20gostaria%20de%20come%C3%A7ar%20a%20treinar%20com%20a%20Postcamp!%20" target="_blank" rel="noopener noreferrer">
+                  Começar Agora
+                  <ArrowRight className="h-5 w-5" />
+                </a>
               </Button>
               <Button
                 size="lg"
