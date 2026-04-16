@@ -23,12 +23,14 @@ export function Hero() {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="text-base font-semibold px-8 py-6 gap-2">
-              Bora Treinar
-              <ArrowRight className="h-5 w-5" />
+            <Button size="lg" className="text-base font-semibold px-8 py-6 gap-2" asChild>
+              <a href="https://wa.me/5512988101210?text=Vim%20pelo%20site%20e%20gostaria%20de%20come%C3%A7ar%20a%20treinar%20com%20a%20Postcamp!%20" target="_blank" rel="noopener noreferrer">
+                Bora Treinar
+                <ArrowRight className="h-5 w-5" />
+              </a>
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 py-6">
-              Ver Planos
+            <Button size="lg" variant="outline" className="text-base px-8 py-6" asChild>
+              <a href="#planos">Ver Planos</a>
             </Button>
           </div>
 
