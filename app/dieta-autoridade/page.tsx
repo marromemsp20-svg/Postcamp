@@ -103,11 +103,17 @@ export default function DietaAutoridade() {
         footer { padding: 2rem 0; border-top: .5px solid #1a1a1a; text-align: center; }
         footer .brand { font-size: 1rem; margin-bottom: .4rem; }
         footer p { font-size: .7rem; color: #2a2a2a; }
+
+        /* POSTCAMP LINK */
+        .brand-link { color: inherit; text-decoration: none; }
+        .brand-link:hover { opacity: .8; }
       `}</style>
 
       <nav>
         <div className="container inner">
-          <div className="brand">POST<span>CAMP</span></div>
+          <a href="https://postcamp.app.br" className="brand-link">
+            <div className="brand">POST<span>CAMP</span></div>
+          </a>
           <div className="nav-tag">Academia de Conteúdo</div>
         </div>
       </nav>
@@ -201,7 +207,9 @@ export default function DietaAutoridade() {
           <h2>Simples. Sem enrolação.</h2>
           <p className="price-sub">Menos do que um jantar por mês. Com resultado que dura anos.</p>
           <div className="price-card">
-            <div className="price-name">Dieta Autoridade — POSTCAMP</div>
+            <div className="price-name">
+              Dieta Autoridade — <a href="https://postcamp.app.br" className="brand-link" style={{ color: '#1DB954' }}>POSTCAMP</a>
+            </div>
             <div className="price-val"><sup>R$</sup>97<span className="per">/mês</span></div>
             <p className="price-desc">Assinatura mensal · Acesso imediato · Cancele quando quiser</p>
             <div className="includes-grid" style={{ marginBottom: '1.5rem' }}>
@@ -241,8 +249,10 @@ export default function DietaAutoridade() {
 
       <footer>
         <div className="container">
-          <div className="brand">POST<span style={{ color: '#1DB954' }}>CAMP</span></div>
-          <p>Academia de Conteúdo para lojistas · contato@postcamp.com.br</p>
+          <a href="https://postcamp.app.br" className="brand-link">
+            <div className="brand">POST<span style={{ color: '#1DB954' }}>CAMP</span></div>
+          </a>
+          <p>Academia de Conteúdo para lojistas · <a href="mailto:contato@postcamp.com.br" style={{ color: 'inherit' }}>contato@postcamp.com.br</a></p>
         </div>
       </footer>
     </>
