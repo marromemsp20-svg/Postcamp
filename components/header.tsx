@@ -14,10 +14,10 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <Image 
-              src="/images/postcamp-logo.jpg" 
-              alt="POSTCAMP Logo" 
-              width={40} 
+            <Image
+              src="/images/postcamp-logo.jpg"
+              alt="POSTCAMP Logo"
+              width={40}
               height={40}
               className="rounded-lg"
             />
@@ -28,23 +28,22 @@ export function Header() {
             <Link href="#metodo" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Método
             </Link>
+            <Link href="#niveis" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Níveis
+            </Link>
             <Link href="#planos" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Planos
             </Link>
             <Link href="#dietas" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Dietas
             </Link>
-            <Link href="#niveis" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Níveis
-            </Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" className="text-sm">
-              Entrar
-            </Button>
-            <Button className="text-sm font-semibold">
-              Começar Agora
+            <Button className="text-sm font-semibold" asChild>
+              <a href="https://wa.me/5512988101210?text=Vim%20pelo%20site%20e%20gostaria%20de%20come%C3%A7ar%20a%20treinar%20com%20a%20Postcamp!%20" target="_blank" rel="noopener noreferrer">
+                Começar Agora
+              </a>
             </Button>
           </div>
 
@@ -74,11 +73,10 @@ export function Header() {
               Níveis
             </Link>
             <div className="flex flex-col gap-2 pt-4 border-t border-border">
-              <Button variant="ghost" className="justify-start text-sm">
-                Entrar
-              </Button>
-              <Button className="text-sm font-semibold">
-                Começar Agora
+              <Button className="text-sm font-semibold" asChild>
+                <a href="https://wa.me/5512988101210?text=Vim%20pelo%20site%20e%20gostaria%20de%20come%C3%A7ar%20a%20treinar%20com%20a%20Postcamp!%20" target="_blank" rel="noopener noreferrer">
+                  Começar Agora
+                </a>
               </Button>
             </div>
           </nav>
