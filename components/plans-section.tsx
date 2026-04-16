@@ -17,6 +17,7 @@ const plans = [
     ],
     cta: "Começar Grátis",
     highlight: false,
+    link: "https://wa.me/5512988101210?text=Ol%C3%A1!%20Quero%20participar%20do%20Plano%20Starter%20gratuito%20do%20POSTCAMP",
   },
   {
     name: "Growth",
@@ -34,6 +35,7 @@ const plans = [
     ],
     cta: "Assinar Growth",
     highlight: true,
+    link: "https://www.postcamp.app.br/plano-growth",
   },
   {
     name: "Elite",
@@ -51,6 +53,7 @@ const plans = [
     ],
     cta: "Entrar para Elite",
     highlight: false,
+    link: "https://www.postcamp.app.br/plano-elite",
   },
   {
     name: "Personal Trainer",
@@ -68,6 +71,7 @@ const plans = [
     ],
     cta: "Falar com Consultor",
     highlight: false,
+    link: "https://www.postcamp.app.br/personal-trainer",
   },
 ]
 
@@ -131,8 +135,11 @@ export function PlansSection() {
               <Button
                 className={`w-full ${plan.highlight ? "" : "bg-secondary hover:bg-secondary/80 text-secondary-foreground"}`}
                 variant={plan.highlight ? "default" : "secondary"}
+                asChild
               >
-                {plan.cta}
+                <a href={plan.link} target="_blank" rel="noopener noreferrer">
+                  {plan.cta}
+                </a>
               </Button>
             </div>
           ))}
