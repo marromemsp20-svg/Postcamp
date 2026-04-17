@@ -17,7 +17,7 @@ const plans = [
     ],
     cta: "Começar Grátis",
     highlight: false,
-    link: "https://wa.me/5512988101210?text=Ol%C3%A1!%20Quero%20participar%20do%20Plano%20Starter%20gratuito%20do%20POSTCAMP",
+    link: "https://www.postcamp.app.br/starter",
   },
   {
     name: "Growth",
